@@ -1,0 +1,35 @@
+# Build artifacts
+build/
+bin/
+.gradle/
+out/
+
+# IDE files
+.idea/
+*.iml
+*.iws
+*.ipr
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Git
+.git/
+.gitignore
+
+# Docs
+*.md
+LICENSE
+
+# Docker
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Secrets / env
+.env
+.env.*
+!.env.example
+
