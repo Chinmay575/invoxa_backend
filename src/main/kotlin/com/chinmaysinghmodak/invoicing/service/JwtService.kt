@@ -4,6 +4,7 @@ import com.chinmaysinghmodak.invoicing.model.OrgUser
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.security.Keys
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import java.time.Instant
 import java.util.Base64
@@ -11,9 +12,9 @@ import java.util.Date
 import javax.crypto.SecretKey
 
 @Service
-class JwtService {
-
-    private val secret = "dGhpc0lzQVZlcnlTZWN1cmVTZWNyZXRLZXlGb3JKV1RUb2tlbkdlbmVyYXRpb25BbmRWYWxpZGF0aW9u"
+class JwtService(
+    @Value("\${jwt.secret}") private val secret: String
+) {
 
     private val signingKey: SecretKey by lazy {
         Keys.hmacShaKeyFor(Base64.getDecoder().decode(secret))

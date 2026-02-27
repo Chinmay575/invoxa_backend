@@ -8,9 +8,9 @@ services:
     healthCheckPath: /actuator/health
     envVars:
       - key: SERVER_PORT
-        value: 8080
+        value: "8080"
       - key: SPRING_PROFILES_ACTIVE
-        value: prod
+        value: "prod"
       - key: SPRING_DATASOURCE_URL
         sync: false  # Set manually in Render dashboard
       - key: SPRING_DATASOURCE_USERNAME
