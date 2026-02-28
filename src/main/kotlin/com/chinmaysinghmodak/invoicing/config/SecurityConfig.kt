@@ -5,7 +5,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.SecurityFilterChain
-import java.beans.Encoder
 
 @Configuration
 class SecurityConfig {
@@ -18,6 +17,15 @@ class SecurityConfig {
     @Bean
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
         http.csrf { it.disable() }.authorizeHttpRequests {
+            it.requestMatchers(
+                "/",
+                "/index.html",
+                "/actuator/**",
+                "/swagger-ui.html",
+                "/swagger-ui/**",
+                "/v3/api-docs/**",
+                "/v3/api-docs",
+            ).permitAll()
             it.anyRequest().permitAll()
         }
 

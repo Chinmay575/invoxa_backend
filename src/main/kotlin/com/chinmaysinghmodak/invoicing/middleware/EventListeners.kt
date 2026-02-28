@@ -1,5 +1,6 @@
 package com.chinmaysinghmodak.invoicing.middleware
 
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.event.EventListener
 import org.springframework.mail.javamail.JavaMailSender
 import org.springframework.mail.javamail.MimeMessageHelper
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Component
 @Component
 class EventListeners(
     private val mailSender: JavaMailSender,
+    @Value("\${app.base-url}") private val baseUrl: String,
 ) {
 
     @Async
@@ -23,7 +25,7 @@ class EventListeners(
         helper.setSubject("Welcome to Invoicing!")
         helper.setText(
             """
-            <h2>Welcome${user.fullName?.let { ", $it" } ?: ""}!</h2>
+            <h2>Welcome ${user.fullName?.let { ", $it" } ?: ""}!</h2>
             <p>Your account has been created successfully.</p>
             <p>You can now start managing your invoices.</p>
             """.trimIndent(),
@@ -39,7 +41,7 @@ class EventListeners(
         val to = user.email ?: return
         val token = event.verificationToken ?: return
 
-        val verifyLink = "http://localhost:8080/auth/email/verify?token=$token"
+        val verifyLink = "$baseUrl/auth/email/verify?token=$token"
 
         val message = mailSender.createMimeMessage()
         val helper = MimeMessageHelper(message, true)
@@ -64,7 +66,7 @@ class EventListeners(
         val user = event.user
         val to = user.email ?: return
 
-        val resetLink = "http://localhost:8080/auth/password/reset/complete?token=${event.resetToken}"
+        val resetLink = "$baseUrl/auth/password/reset/complete?token=${event.resetToken}"
 
         val message = mailSender.createMimeMessage()
         val helper = MimeMessageHelper(message, true)

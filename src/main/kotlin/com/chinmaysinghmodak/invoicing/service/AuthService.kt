@@ -49,7 +49,7 @@ class AuthService(
 
         val user = authRepository.save(req)
 
-        val organization = organizationService.createOrganization("")
+        val organization = organizationService.createOrganization("My Organization")
         val role = roleService.createRole("Owner", organization)
         val orgUser = orgUserService.createOrgUser(user, organization, role)
 
