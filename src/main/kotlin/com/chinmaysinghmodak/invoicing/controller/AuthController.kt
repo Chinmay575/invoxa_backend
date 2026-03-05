@@ -48,8 +48,8 @@ class AuthController(
         try {
             val user: OrgUser = authService.register(registerRequest)
 
-            val accessToken = jwtService.generateAccessToken(user, registerRequest.deviceId)
-            val refreshToken = jwtService.generateRefreshToken(user, registerRequest.deviceId)
+            val accessToken = jwtService.generateAccessToken(user)
+            val refreshToken = jwtService.generateRefreshToken(user)
 
             tokenService.saveRefreshToken(refreshToken, user, registerRequest.deviceId)
 
@@ -105,8 +105,8 @@ class AuthController(
             val user: OrgUser? = authService.login(request.email, request.password, request.organizationId);
 
             if (user != null) {
-                val accessToken = jwtService.generateAccessToken(user, request.deviceId)
-                val refreshToken = jwtService.generateRefreshToken(user, request.deviceId)
+                val accessToken = jwtService.generateAccessToken(user)
+                val refreshToken = jwtService.generateRefreshToken(user)
 
                 tokenService.saveRefreshToken(refreshToken, user, request.deviceId)
 

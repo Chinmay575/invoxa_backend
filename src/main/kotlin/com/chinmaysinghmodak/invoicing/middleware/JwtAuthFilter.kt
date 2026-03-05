@@ -14,6 +14,7 @@ import org.springframework.web.filter.OncePerRequestFilter
 class JwtAuthFilter(
     private val jwtService: JwtService
 ) : OncePerRequestFilter() {
+
     override fun doFilterInternal(
         request: HttpServletRequest, response: HttpServletResponse, filterChain: FilterChain
     ) {
@@ -29,9 +30,6 @@ class JwtAuthFilter(
             val claims = jwtService.extractClaims(token)
             val authentication = JwtAuthenticationToken(
                 userId = claims.subject.toLong(),
-                roleId = claims["roleId"]?.toString()?.toLongOrNull(),
-                organizationId = claims["organizationId"]?.toString()?.toLongOrNull(),
-                deviceId = claims["deviceId"]?.toString(),
                 token = token
             )
             authentication.details = WebAuthenticationDetailsSource().buildDetails(request)

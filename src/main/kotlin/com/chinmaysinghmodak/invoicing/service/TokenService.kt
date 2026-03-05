@@ -41,7 +41,7 @@ class TokenService(
     @Transactional
     fun rotateRefreshToken(oldTokenHash: String, orgUser: OrgUser, deviceId: String): String {
         revokeToken(oldTokenHash)
-        val newToken = jwtService.generateRefreshToken(orgUser, deviceId)
+        val newToken = jwtService.generateRefreshToken(orgUser)
         saveRefreshToken(newToken, orgUser, deviceId)
         return newToken
     }

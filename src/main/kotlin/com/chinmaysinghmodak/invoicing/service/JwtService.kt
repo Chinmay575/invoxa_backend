@@ -13,7 +13,7 @@ import javax.crypto.SecretKey
 
 @Service
 class JwtService(
-    @Value("\${jwt.secret}") private val secret: String
+    @Value($$"${jwt.secret}") private val secret: String
 ) {
 
     private val signingKey: SecretKey by lazy {
@@ -23,12 +23,9 @@ class JwtService(
     private val accessTokenValidityMs = 15 * 60 * 1000
     private val refreshTokenValidityMs = 30L * 24 * 60 * 60 * 1000
 
-    fun generateAccessToken(user: OrgUser, deviceId: String): String {
+    fun generateAccessToken(user: OrgUser): String {
         return Jwts.builder()
             .setSubject(user.id.toString())
-            .claim("roleId", user.role?.id)
-            .claim("organizationId", user.organization?.id)
-            .claim("deviceId", deviceId)
             .claim("type", "ACCESS")
             .setIssuedAt(Date())
             .setExpiration(Date(System.currentTimeMillis() + accessTokenValidityMs))
@@ -36,12 +33,9 @@ class JwtService(
             .compact()
     }
 
-    fun generateRefreshToken(user: OrgUser, deviceId: String): String {
+    fun generateRefreshToken(user: OrgUser): String {
         return Jwts.builder()
             .setSubject(user.id.toString())
-            .claim("roleId", user.role?.id)
-            .claim("organizationId", user.organization?.id)
-            .claim("deviceId", deviceId)
             .claim("type", "REFRESH")
             .setIssuedAt(Date())
             .setExpiration(Date(System.currentTimeMillis() + refreshTokenValidityMs))
@@ -57,29 +51,11 @@ class JwtService(
             .body
     }
 
-    fun extractUserId(token: String): Long {
-        return extractClaims(token).subject.toLong()
-    }
-
-    fun extractRoleId(token: String): Long? {
-        val value = extractClaims(token)["roleId"] ?: return null
-        return (value as Number).toLong()
-    }
-
-    fun extractOrganizationId(token: String): Long? {
-        val value = extractClaims(token)["organizationId"] ?: return null
-        return (value as Number).toLong()
-    }
-
-    fun extractTokenType(token: String): String {
-        return extractClaims(token)["type"] as String
-    }
-
     fun isTokenValid(token: String): Boolean {
         return try {
             extractClaims(token)
             true
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             false
         }
     }

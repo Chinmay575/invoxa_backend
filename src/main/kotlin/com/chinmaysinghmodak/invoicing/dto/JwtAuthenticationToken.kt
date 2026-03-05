@@ -5,9 +5,6 @@ import org.springframework.security.core.GrantedAuthority
 
 class JwtAuthenticationToken(
     val userId: Long,
-    val roleId: Long?,
-    val organizationId: Long?,
-    val deviceId: String? = null,
     val token: String,
     authorities: Collection<GrantedAuthority> = emptyList()
 ) : AbstractAuthenticationToken(authorities) {

@@ -26,7 +26,7 @@ class SecurityConfig {
                 "/v3/api-docs/**",
                 "/v3/api-docs",
             ).permitAll()
-            it.anyRequest().permitAll()
+            it.anyRequest().authenticated()
         }
 
         return http.build()
