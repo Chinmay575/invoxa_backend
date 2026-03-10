@@ -1,4 +1,4 @@
-package com.chinmaysinghmodak.invoicing.dto
+package com.chinmaysinghmodak.invoicing.dto.auth
 
 import org.springframework.security.authentication.AbstractAuthenticationToken
 import org.springframework.security.core.GrantedAuthority
@@ -16,3 +16,4 @@ class JwtAuthenticationToken(
     override fun getCredentials(): Any? = null
     override fun getPrincipal(): Any = userId
 }
+

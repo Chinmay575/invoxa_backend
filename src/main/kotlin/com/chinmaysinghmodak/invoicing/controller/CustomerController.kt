@@ -1,10 +1,10 @@
 package com.chinmaysinghmodak.invoicing.controller
 
-import com.chinmaysinghmodak.invoicing.dto.ApiResponse
-import com.chinmaysinghmodak.invoicing.dto.CreateCustomerRequest
-import com.chinmaysinghmodak.invoicing.dto.CustomerDto
-import com.chinmaysinghmodak.invoicing.dto.JwtAuthenticationToken
-import com.chinmaysinghmodak.invoicing.dto.UpdateCustomerRequest
+import com.chinmaysinghmodak.invoicing.dto.common.ApiResponse
+import com.chinmaysinghmodak.invoicing.dto.customer.CreateCustomerRequest
+import com.chinmaysinghmodak.invoicing.dto.customer.CustomerDto
+import com.chinmaysinghmodak.invoicing.dto.auth.JwtAuthenticationToken
+import com.chinmaysinghmodak.invoicing.dto.customer.UpdateCustomerRequest
 import com.chinmaysinghmodak.invoicing.service.CustomerService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.security.SecurityRequirement

@@ -2,7 +2,7 @@ package com.chinmaysinghmodak.invoicing.exception
 
 //import com.chinmaysinghmodak.chefio_backend.dto.ApiError
 import com.chinmaysinghmodak.chefio_backend.exception.ApiException
-import com.chinmaysinghmodak.invoicing.dto.ApiResponse
+import com.chinmaysinghmodak.invoicing.dto.common.ApiResponse
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.http.converter.HttpMessageNotReadableException

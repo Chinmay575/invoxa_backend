@@ -1,7 +1,7 @@
 package com.chinmaysinghmodak.invoicing.controller
 
-import com.chinmaysinghmodak.invoicing.dto.ApiResponse
-import com.chinmaysinghmodak.invoicing.dto.CreateOrganizationRequest
+import com.chinmaysinghmodak.invoicing.dto.common.ApiResponse
+import com.chinmaysinghmodak.invoicing.dto.organization.CreateOrganizationRequest
 import com.chinmaysinghmodak.invoicing.model.Organization
 import com.chinmaysinghmodak.invoicing.service.OrganizationService
 import io.swagger.v3.oas.annotations.Operation

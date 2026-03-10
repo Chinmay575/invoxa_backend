@@ -1,7 +1,7 @@
 package com.chinmaysinghmodak.invoicing.service
 
-import com.chinmaysinghmodak.invoicing.dto.ProductDto
-import com.chinmaysinghmodak.invoicing.dto.toProductDto
+import com.chinmaysinghmodak.invoicing.dto.product.ProductDto
+import com.chinmaysinghmodak.invoicing.dto.product.toProductDto
 import com.chinmaysinghmodak.invoicing.model.OrgUser
 import com.chinmaysinghmodak.invoicing.model.Product
 import com.chinmaysinghmodak.invoicing.repository.OrgUserRepository

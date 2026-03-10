@@ -1,4 +1,4 @@
-package com.chinmaysinghmodak.invoicing.dto
+package com.chinmaysinghmodak.invoicing.dto.invoice
 
 import com.chinmaysinghmodak.invoicing.model.InvoiceStatus
 import java.math.BigDecimal
@@ -15,7 +15,7 @@ data class CreateInvoiceRequest (
     var dueDate: Instant? = null,
     var status: InvoiceStatus = InvoiceStatus.DRAFT,
     var items : List<Item> = emptyList(),
-    )
+)
 
 data class Item (
     var id : Long,
@@ -24,3 +24,4 @@ data class Item (
     var unitPrice: BigDecimal = BigDecimal.ZERO,
     var totalPrice: BigDecimal = BigDecimal.ZERO,
 )
+

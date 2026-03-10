@@ -1,7 +1,6 @@
-package com.chinmaysinghmodak.invoicing.dto
+package com.chinmaysinghmodak.invoicing.dto.organization
 
 import com.chinmaysinghmodak.invoicing.model.OrgUser
-import com.chinmaysinghmodak.invoicing.model.Organization
 
 data class OrgRolesDto (
     var id: Long = 0,
@@ -16,3 +15,4 @@ fun toOrgRoleDto(orgUser: OrgUser): OrgRolesDto {
         roleName = orgUser.role?.name
     )
 }
+

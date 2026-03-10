@@ -1,8 +1,8 @@
 package com.chinmaysinghmodak.invoicing.service
 
-import com.chinmaysinghmodak.invoicing.dto.RegisterRequest
-import com.chinmaysinghmodak.invoicing.dto.UserDto
-import com.chinmaysinghmodak.invoicing.dto.userToDto
+import com.chinmaysinghmodak.invoicing.dto.auth.RegisterRequest
+import com.chinmaysinghmodak.invoicing.dto.auth.UserDto
+import com.chinmaysinghmodak.invoicing.dto.auth.userToDto
 import com.chinmaysinghmodak.invoicing.exception.UserNotFound
 import com.chinmaysinghmodak.invoicing.middleware.UserRegisteredEvent
 import com.chinmaysinghmodak.invoicing.middleware.PasswordResetRequestedEvent

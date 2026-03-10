@@ -1,4 +1,4 @@
-package com.chinmaysinghmodak.invoicing.dto
+package com.chinmaysinghmodak.invoicing.dto.product
 
 import com.chinmaysinghmodak.invoicing.model.Product
 
@@ -19,3 +19,4 @@ fun toProductDto(product: Product): ProductDto {
         stock = product.stock,
     )
 }
+

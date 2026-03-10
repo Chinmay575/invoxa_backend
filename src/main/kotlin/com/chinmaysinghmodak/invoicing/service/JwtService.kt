@@ -43,23 +43,6 @@ class JwtService(
             .compact()
     }
 
-    fun extractClaims(token: String): Claims {
-        return Jwts.parserBuilder()
-            .setSigningKey(signingKey)
-            .build()
-            .parseClaimsJws(token)
-            .body
-    }
-
-    fun isTokenValid(token: String): Boolean {
-        return try {
-            extractClaims(token)
-            true
-        } catch (_: Exception) {
-            false
-        }
-    }
-
     fun getRefreshTokenExpiryDate(): Instant {
         return Instant.now().plusMillis(refreshTokenValidityMs)
     }

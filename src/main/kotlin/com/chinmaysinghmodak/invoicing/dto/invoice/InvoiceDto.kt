@@ -1,4 +1,4 @@
-package com.chinmaysinghmodak.invoicing.dto
+package com.chinmaysinghmodak.invoicing.dto.invoice
 
 import com.chinmaysinghmodak.invoicing.model.Invoice
 import com.chinmaysinghmodak.invoicing.model.InvoiceStatus
@@ -21,3 +21,4 @@ fun toInvoiceDto(invoice: Invoice?): InvoiceDto {
         status = invoice?.status
     )
 }
+

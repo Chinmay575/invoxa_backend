@@ -1,9 +1,10 @@
-package com.chinmaysinghmodak.invoicing.dto
+package com.chinmaysinghmodak.invoicing.dto.customer
 
-data class CreateCustomerRequest (
+data class UpdateCustomerRequest (
     var name: String = "",
     var email: String? = null,
     var address: String? = null,
     var mobile: String? = null,
     var taxNumber: String? = null,
 )
+

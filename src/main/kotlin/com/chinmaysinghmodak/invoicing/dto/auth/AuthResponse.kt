@@ -1,4 +1,4 @@
-package com.chinmaysinghmodak.invoicing.dto
+package com.chinmaysinghmodak.invoicing.dto.auth
 
 import com.chinmaysinghmodak.invoicing.model.OrgUser
 
@@ -20,5 +20,5 @@ fun orgUserToDto(orgUser: OrgUser, accessToken: String?, refreshToken: String?):
         accessToken = accessToken,
         refreshToken = refreshToken
     )
-
 }
+

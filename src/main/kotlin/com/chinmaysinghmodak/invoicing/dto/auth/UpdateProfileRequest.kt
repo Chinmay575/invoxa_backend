@@ -1,4 +1,4 @@
-package com.chinmaysinghmodak.invoicing.dto
+package com.chinmaysinghmodak.invoicing.dto.auth
 
 data class UpdateProfileRequest(
     var fullName: String? = null,

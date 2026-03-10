@@ -26,17 +26,17 @@ class TokenService(
         tokenRepository.save(tokenEntity)
     }
 
-    fun findByTokenHash(tokenHash: String): Token? {
-        return tokenRepository.findByTokenHashAndRevokedFalse(tokenHash)
-    }
-
-    fun isRefreshTokenValid(tokenHash: String): Boolean {
-        val token = tokenRepository.findByTokenHashAndRevokedFalse(tokenHash) ?: return false
-        if (token.expiryAt != null && token.expiryAt!!.isBefore(Instant.now())) {
-            return false
-        }
-        return jwtService.isTokenValid(tokenHash)
-    }
+//    fun findByTokenHash(tokenHash: String): Token? {
+//        return tokenRepository.findByTokenHashAndRevokedFalse(tokenHash)
+//    }
+//
+//    fun isRefreshTokenValid(tokenHash: String): Boolean {
+//        val token = tokenRepository.findByTokenHashAndRevokedFalse(tokenHash) ?: return false
+//        if (token.expiryAt != null && token.expiryAt!!.isBefore(Instant.now())) {
+//            return false
+//        }
+//        return jwtService.isTokenValid(tokenHash)
+//    }
 
     @Transactional
     fun rotateRefreshToken(oldTokenHash: String, orgUser: OrgUser, deviceId: String): String {

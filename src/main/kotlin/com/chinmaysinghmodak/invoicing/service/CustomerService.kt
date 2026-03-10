@@ -1,11 +1,12 @@
 package com.chinmaysinghmodak.invoicing.service
 
-import com.chinmaysinghmodak.invoicing.dto.CreateCustomerRequest
-import com.chinmaysinghmodak.invoicing.dto.CustomerDto
-import com.chinmaysinghmodak.invoicing.dto.UpdateCustomerRequest
-import com.chinmaysinghmodak.invoicing.dto.toCustomerDto
+import com.chinmaysinghmodak.invoicing.dto.customer.CreateCustomerRequest
+import com.chinmaysinghmodak.invoicing.dto.customer.CustomerDto
+import com.chinmaysinghmodak.invoicing.dto.customer.UpdateCustomerRequest
+import com.chinmaysinghmodak.invoicing.dto.customer.toCustomerDto
 import com.chinmaysinghmodak.invoicing.model.Customer
 import com.chinmaysinghmodak.invoicing.repository.CustomerRepository
+import com.chinmaysinghmodak.invoicing.repository.InvoiceItemRepository
 import com.chinmaysinghmodak.invoicing.repository.OrgUserRepository
 import org.springframework.stereotype.Service
 import java.time.Instant
@@ -13,7 +14,7 @@ import java.time.Instant
 @Service
 class CustomerService(
     private val customerRepository: CustomerRepository,
-    private val orgUserRepository: OrgUserRepository
+    private val orgUserRepository: OrgUserRepository,
 ) {
 
     fun createCustomer(request: CreateCustomerRequest, userId: Long): CustomerDto {

@@ -1,4 +1,4 @@
-package com.chinmaysinghmodak.invoicing.dto
+package com.chinmaysinghmodak.invoicing.dto.auth
 
 import com.chinmaysinghmodak.invoicing.model.User
 
@@ -24,3 +24,4 @@ fun userToDto(user: User?): UserDto? {
         mobile = user.mobile
     )
 }
+

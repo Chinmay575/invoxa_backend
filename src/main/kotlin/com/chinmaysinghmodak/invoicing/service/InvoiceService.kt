@@ -1,14 +1,18 @@
 package com.chinmaysinghmodak.invoicing.service
 
-import com.chinmaysinghmodak.invoicing.dto.CreateInvoiceRequest
-import com.chinmaysinghmodak.invoicing.dto.InvoiceDto
-import com.chinmaysinghmodak.invoicing.dto.toInvoiceDto
+import com.chinmaysinghmodak.invoicing.dto.invoice.CreateInvoiceRequest
+import com.chinmaysinghmodak.invoicing.dto.invoice.InvoiceDto
+import com.chinmaysinghmodak.invoicing.dto.invoice.toInvoiceDto
 import com.chinmaysinghmodak.invoicing.model.Customer
 import com.chinmaysinghmodak.invoicing.model.Invoice
+import com.chinmaysinghmodak.invoicing.model.InvoiceItem
 import com.chinmaysinghmodak.invoicing.model.OrgUser
 import com.chinmaysinghmodak.invoicing.repository.CustomerRepository
+import com.chinmaysinghmodak.invoicing.repository.InvoiceItemRepository
 import com.chinmaysinghmodak.invoicing.repository.InvoiceRepository
 import com.chinmaysinghmodak.invoicing.repository.OrgUserRepository
+import com.chinmaysinghmodak.invoicing.repository.ProductRepository
+import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 import java.time.Instant
 
@@ -16,9 +20,12 @@ import java.time.Instant
 class InvoiceService(
     private val orgUserRepository: OrgUserRepository,
     private val customerRepository: CustomerRepository,
-    private val invoiceRepository: InvoiceRepository
+    private val invoiceRepository: InvoiceRepository,
+    private val invoiceItemRepository: InvoiceItemRepository,
+    private val productRepository: ProductRepository
 ) {
 
+    @Transactional
     fun createInvoice(request: CreateInvoiceRequest, userId: Long): InvoiceDto {
 
 
@@ -30,7 +37,8 @@ class InvoiceService(
 
 
             val customer: Customer =
-                customerRepository.findById(request.customer).orElseThrow { Exception("Customer not found") }
+                customerRepository.findById(request.customer ?: throw Exception("Customer ID is required"))
+                    .orElseThrow { Exception("Customer not found") }
 
             val newInv = Invoice(
 
@@ -49,6 +57,20 @@ class InvoiceService(
                 )
 
             val invoice = invoiceRepository.save(newInv)
+
+            val savedInvoiceItems = invoiceItemRepository.saveAll(
+                request.items.map {
+                    InvoiceItem(
+                        invoice = invoice,
+                        createdAt = Instant.now(),
+                        updatedAt = Instant.now(),
+                        product = productRepository.getReferenceById(it.id),
+                        description = it.description,
+                        quantity = it.quantity,
+                        unitPrice = it.unitPrice,
+                    )
+                }
+            )
 
             return toInvoiceDto(invoice)
 

@@ -1,8 +1,8 @@
 package com.chinmaysinghmodak.invoicing.controller
 
-import com.chinmaysinghmodak.invoicing.dto.ApiResponse
-import com.chinmaysinghmodak.invoicing.dto.JwtAuthenticationToken
-import com.chinmaysinghmodak.invoicing.dto.ProductDto
+import com.chinmaysinghmodak.invoicing.dto.common.ApiResponse
+import com.chinmaysinghmodak.invoicing.dto.auth.JwtAuthenticationToken
+import com.chinmaysinghmodak.invoicing.dto.product.ProductDto
 import com.chinmaysinghmodak.invoicing.model.Product
 import com.chinmaysinghmodak.invoicing.service.ProductService
 import org.springframework.http.ResponseEntity

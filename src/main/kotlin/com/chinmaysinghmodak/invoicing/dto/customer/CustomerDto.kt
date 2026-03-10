@@ -1,7 +1,6 @@
-package com.chinmaysinghmodak.invoicing.dto
+package com.chinmaysinghmodak.invoicing.dto.customer
 
 import com.chinmaysinghmodak.invoicing.model.Customer
-
 
 data class CustomerDto(
     var id: Long = 0,
@@ -21,5 +20,5 @@ fun toCustomerDto(customer: Customer): CustomerDto {
         address = customer.address,
         taxNumber = customer.taxNumber
     )
-
 }
+
