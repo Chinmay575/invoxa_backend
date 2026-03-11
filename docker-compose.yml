@@ -29,8 +29,8 @@ services:
     environment:
       SPRING_MAIL_HOST: mailhog
       SPRING_MAIL_PORT: 1025
-      SPRING_MAIL_USERNAME: ""
-      SPRING_MAIL_PASSWORD: ""
+      SPRING_MAIL_USERNAME: chinmaysinghmodak@gmail.com
+      SPRING_MAIL_PASSWORD: ppxjinijcjgrkdpr
     healthcheck:
       test: ["CMD", "wget", "--spider", "-q", "http://localhost:8080/actuator/health"]
       interval: 30s
