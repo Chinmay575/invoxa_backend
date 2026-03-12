@@ -8,7 +8,9 @@ import com.chinmaysinghmodak.invoicing.dto.organization.OrgRolesDto
 import com.chinmaysinghmodak.invoicing.dto.auth.OrgUserDto
 import com.chinmaysinghmodak.invoicing.dto.auth.PasswordResetCompleteRequest
 import com.chinmaysinghmodak.invoicing.dto.auth.PasswordResetInitiateRequest
+import com.chinmaysinghmodak.invoicing.dto.auth.RefreshTokenRequest
 import com.chinmaysinghmodak.invoicing.dto.auth.RegisterRequest
+import com.chinmaysinghmodak.invoicing.dto.auth.TokenRefreshResponse
 import com.chinmaysinghmodak.invoicing.dto.auth.UpdatePasswordRequest
 import com.chinmaysinghmodak.invoicing.dto.auth.UpdateProfileRequest
 import com.chinmaysinghmodak.invoicing.dto.auth.UserDto
@@ -297,6 +299,32 @@ class AuthController(
             ResponseEntity.ok(ApiResponse(success = true, message = "Password reset successfully"))
         } catch (e: Exception) {
             ResponseEntity.ok(ApiResponse(success = false, error = e.message, message = "Password reset failed"))
+        }
+    }
+
+    @Operation(
+        summary = "Refresh access token",
+        description = "Generates a new access token and rotates the refresh token using a valid refresh token"
+    )
+    @PostMapping("/token/refresh")
+    fun refreshToken(@RequestBody @Valid request: RefreshTokenRequest): ResponseEntity<ApiResponse<TokenRefreshResponse>> {
+        return try {
+            val response = tokenService.refreshAccessToken(request.refreshToken, request.deviceId)
+            ResponseEntity.ok(
+                ApiResponse(
+                    success = true,
+                    data = response,
+                    message = "Token refreshed successfully"
+                )
+            )
+        } catch (e: Exception) {
+            ResponseEntity.ok(
+                ApiResponse(
+                    success = false,
+                    error = e.message,
+                    message = "Token refresh failed"
+                )
+            )
         }
     }
 

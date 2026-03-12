@@ -6,6 +6,9 @@ import com.chinmaysinghmodak.invoicing.dto.product.CreateProductRequest
 import com.chinmaysinghmodak.invoicing.dto.product.ProductDto
 import com.chinmaysinghmodak.invoicing.model.Product
 import com.chinmaysinghmodak.invoicing.service.ProductService
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.security.SecurityRequirement
+import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.context.SecurityContextHolder
@@ -19,10 +22,13 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/products")
+@Tag(name = "Product", description = "Product creation and management")
 class ProductController(
     var productService: ProductService
 ) {
 
+    @Operation(summary = "Create product", description = "Creates a new product under the authenticated user's organization")
+    @SecurityRequirement(name = "Bearer Authentication")
     @PostMapping("/create")
     fun createProduct(@RequestBody @Valid request: CreateProductRequest): ResponseEntity<ApiResponse<ProductDto>> {
 
@@ -50,12 +56,16 @@ class ProductController(
         }
     }
 
+    @Operation(summary = "Update product", description = "Updates an existing product's details")
+    @SecurityRequirement(name = "Bearer Authentication")
     @PatchMapping("/{id}")
     fun updateProduct(@PathVariable id: Long, @RequestBody product: Product) {
 
     }
 
 
+    @Operation(summary = "Get product by ID", description = "Returns a single product by its ID within the authenticated user's organization")
+    @SecurityRequirement(name = "Bearer Authentication")
     @GetMapping("/{id}")
     fun getProductById(@PathVariable("id") id: Long) : ResponseEntity<ApiResponse<ProductDto>> {
             try {
@@ -80,6 +90,8 @@ class ProductController(
             }
     }
 
+    @Operation(summary = "Get all products", description = "Returns all products belonging to the authenticated user's organization")
+    @SecurityRequirement(name = "Bearer Authentication")
     @GetMapping("/")
     fun getAllProducts(): ResponseEntity<ApiResponse<List<ProductDto>>> {
 

@@ -13,7 +13,7 @@ import javax.crypto.SecretKey
 
 @Service
 class JwtService(
-    @Value($$"${jwt.secret}") private val secret: String
+    @Value("\${jwt.secret}") private val secret: String
 ) {
 
     private val signingKey: SecretKey by lazy {
@@ -45,5 +45,38 @@ class JwtService(
 
     fun getRefreshTokenExpiryDate(): Instant {
         return Instant.now().plusMillis(refreshTokenValidityMs)
+    }
+
+    fun extractClaims(token: String): Claims {
+        return Jwts.parserBuilder()
+            .setSigningKey(signingKey)
+            .build()
+            .parseClaimsJws(token)
+            .body
+    }
+
+    fun isTokenValid(token: String): Boolean {
+        return try {
+            extractClaims(token)
+            true
+        } catch (_: Exception) {
+            false
+        }
+    }
+
+    fun getTokenType(token: String): String? {
+        return try {
+            extractClaims(token).get("type", String::class.java)
+        } catch (_: Exception) {
+            null
+        }
+    }
+
+    fun getSubject(token: String): Long? {
+        return try {
+            extractClaims(token).subject.toLong()
+        } catch (_: Exception) {
+            null
+        }
     }
 }

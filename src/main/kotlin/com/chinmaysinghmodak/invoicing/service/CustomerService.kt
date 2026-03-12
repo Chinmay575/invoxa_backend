@@ -4,10 +4,14 @@ import com.chinmaysinghmodak.invoicing.dto.customer.CreateCustomerRequest
 import com.chinmaysinghmodak.invoicing.dto.customer.CustomerDto
 import com.chinmaysinghmodak.invoicing.dto.customer.UpdateCustomerRequest
 import com.chinmaysinghmodak.invoicing.dto.customer.toCustomerDto
+ import com.chinmaysinghmodak.invoicing.config.CacheConfig
 import com.chinmaysinghmodak.invoicing.model.Customer
 import com.chinmaysinghmodak.invoicing.repository.CustomerRepository
 import com.chinmaysinghmodak.invoicing.repository.InvoiceItemRepository
 import com.chinmaysinghmodak.invoicing.repository.OrgUserRepository
+import org.springframework.cache.annotation.CacheEvict
+import org.springframework.cache.annotation.Cacheable
+import org.springframework.cache.annotation.Caching
 import org.springframework.stereotype.Service
 import java.time.Instant
 
@@ -17,6 +21,7 @@ class CustomerService(
     private val orgUserRepository: OrgUserRepository,
 ) {
 
+    @CacheEvict(value = [CacheConfig.CUSTOMERS], key = "#userId")
     fun createCustomer(request: CreateCustomerRequest, userId: Long): CustomerDto {
 
         try {
@@ -42,6 +47,7 @@ class CustomerService(
     }
 
 
+    @Cacheable(value = [CacheConfig.CUSTOMERS], key = "#userId")
     fun getAllCustomers(userId: Long): List<CustomerDto> {
         try {
             val user = orgUserRepository.findById(userId).orElseThrow { Exception("User does not exist") }
@@ -53,6 +59,7 @@ class CustomerService(
 
     }
 
+    @Cacheable(value = [CacheConfig.CUSTOMER], key = "#customerId")
     fun getCustomerById(customerId: Long, userId: Long): CustomerDto {
         try {
             val user = orgUserRepository.findById(userId).orElseThrow { Exception("User does not exist") }
@@ -68,6 +75,10 @@ class CustomerService(
         }
     }
 
+    @Caching(evict = [
+        CacheEvict(value = [CacheConfig.CUSTOMER], key = "#id"),
+        CacheEvict(value = [CacheConfig.CUSTOMERS], key = "#userId"),
+    ])
     fun updateCustomer(id: Long, request: UpdateCustomerRequest, userId: Long): CustomerDto {
         try {
             val user = orgUserRepository.findById(userId).orElseThrow { Exception("User does not exist") }

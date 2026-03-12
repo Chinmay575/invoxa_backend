@@ -3,6 +3,7 @@ package com.chinmaysinghmodak.invoicing.service
 import com.chinmaysinghmodak.invoicing.dto.invoice.CreateInvoiceRequest
 import com.chinmaysinghmodak.invoicing.dto.invoice.InvoiceDto
 import com.chinmaysinghmodak.invoicing.dto.invoice.toInvoiceDto
+import com.chinmaysinghmodak.invoicing.config.CacheConfig
 import com.chinmaysinghmodak.invoicing.model.Customer
 import com.chinmaysinghmodak.invoicing.model.Invoice
 import com.chinmaysinghmodak.invoicing.model.InvoiceItem
@@ -13,6 +14,8 @@ import com.chinmaysinghmodak.invoicing.repository.InvoiceRepository
 import com.chinmaysinghmodak.invoicing.repository.OrgUserRepository
 import com.chinmaysinghmodak.invoicing.repository.ProductRepository
 import jakarta.transaction.Transactional
+import org.springframework.cache.annotation.CacheEvict
+import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Service
 import java.time.Instant
 
@@ -25,6 +28,7 @@ class InvoiceService(
     private val productRepository: ProductRepository
 ) {
 
+    @CacheEvict(value = [CacheConfig.INVOICES], key = "#userId")
     @Transactional
     fun createInvoice(request: CreateInvoiceRequest, userId: Long): InvoiceDto {
 
@@ -80,6 +84,7 @@ class InvoiceService(
 
     }
 
+    @Cacheable(value = [CacheConfig.INVOICES], key = "#userId")
     fun getAllInvoices(userId: Long): List<InvoiceDto> {
         try {
             val orgUser: OrgUser =
@@ -93,6 +98,7 @@ class InvoiceService(
         }
     }
 
+    @Cacheable(value = [CacheConfig.INVOICE], key = "#id")
     fun getInvoiceById(id: Long, userId: Long): InvoiceDto {
         try {
             val orgUser: OrgUser =

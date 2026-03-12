@@ -3,11 +3,14 @@ package com.chinmaysinghmodak.invoicing.service
 import com.chinmaysinghmodak.invoicing.dto.product.CreateProductRequest
 import com.chinmaysinghmodak.invoicing.dto.product.ProductDto
 import com.chinmaysinghmodak.invoicing.dto.product.toProductDto
+import com.chinmaysinghmodak.invoicing.config.CacheConfig
 import com.chinmaysinghmodak.invoicing.model.OrgUser
 import com.chinmaysinghmodak.invoicing.model.Product
 import com.chinmaysinghmodak.invoicing.repository.OrgUserRepository
 import com.chinmaysinghmodak.invoicing.repository.ProductRepository
 import jakarta.transaction.Transactional
+import org.springframework.cache.annotation.CacheEvict
+import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Service
 import java.time.Instant
 
@@ -16,6 +19,7 @@ class ProductService(
     var productRepository: ProductRepository,
     var orgUserRepository: OrgUserRepository,
 ) {
+    @Cacheable(value = [CacheConfig.PRODUCTS], key = "#userId")
     fun getAllProducts(userId: Long): List<ProductDto> {
         try {
 
@@ -29,6 +33,7 @@ class ProductService(
         }
     }
 
+    @CacheEvict(value = [CacheConfig.PRODUCTS], key = "#userId")
     @Transactional
     fun createProduct(userId: Long, request: CreateProductRequest): ProductDto {
         try {
@@ -56,6 +61,7 @@ class ProductService(
         }
     }
 
+    @Cacheable(value = [CacheConfig.PRODUCT], key = "#productId")
     fun getProductById(userId: Long, productId: Long): ProductDto {
         try {
 

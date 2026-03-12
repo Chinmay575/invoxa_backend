@@ -3,6 +3,7 @@ package com.chinmaysinghmodak.invoicing.service
 import com.chinmaysinghmodak.invoicing.dto.auth.RegisterRequest
 import com.chinmaysinghmodak.invoicing.dto.auth.UserDto
 import com.chinmaysinghmodak.invoicing.dto.auth.userToDto
+import com.chinmaysinghmodak.invoicing.config.CacheConfig
 import com.chinmaysinghmodak.invoicing.exception.UserNotFound
 import com.chinmaysinghmodak.invoicing.middleware.UserRegisteredEvent
 import com.chinmaysinghmodak.invoicing.middleware.PasswordResetRequestedEvent
@@ -12,6 +13,9 @@ import com.chinmaysinghmodak.invoicing.model.User
 import com.chinmaysinghmodak.invoicing.repository.AuthRepository
 import com.chinmaysinghmodak.invoicing.repository.PendingVerificationRepository
 import jakarta.transaction.Transactional
+import org.springframework.cache.annotation.CacheEvict
+import org.springframework.cache.annotation.Cacheable
+import org.springframework.cache.CacheManager
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
@@ -28,6 +32,7 @@ class AuthService(
     var passwordEncoder: PasswordEncoder,
     var pendingVerificationRepository: PendingVerificationRepository,
     var eventPublisher: ApplicationEventPublisher,
+    var cacheManager: CacheManager,
 ) {
 
     fun getUserByEmail(email: String, password: String): User? {
@@ -84,6 +89,7 @@ class AuthService(
         }
     }
 
+    @Cacheable(value = [CacheConfig.USER_PROFILE], key = "#id")
     fun getProfile(id: Long): UserDto? {
         val result: Optional<User> = authRepository.findById(id)
 
@@ -94,6 +100,7 @@ class AuthService(
         }
     }
 
+    @CacheEvict(value = [CacheConfig.USER_PROFILE], key = "#userId")
     @Transactional
     fun updateProfile(userId: Long, fullName: String?, mobile: String?, username: String?, profilePic: String?) {
         val user = authRepository.findById(userId).orElseThrow { UserNotFound() }
@@ -126,9 +133,13 @@ class AuthService(
         user.updatedAt = Instant.now()
         authRepository.save(user)
 
+        // Evict cached profile since isEmailVerified changed
+        cacheManager.getCache(CacheConfig.USER_PROFILE)?.evict(user.id)
+
         pendingVerificationRepository.delete(verification)
     }
 
+    @CacheEvict(value = [CacheConfig.USER_PROFILE], key = "#userId")
     @Transactional
     fun updatePassword(password: String, newPassword: String, userId: Long) {
         val user = authRepository.findById(userId)
