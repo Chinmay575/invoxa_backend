@@ -16,27 +16,22 @@ class TokenService(
     private val jwtService: JwtService,
 ) {
 
+    @Transactional
     fun saveRefreshToken(token: String, user: OrgUser, deviceId: String) {
-        val tokenEntity = Token(
-            tokenHash = token,
-            user = user.user,
-            deviceId = deviceId,
-            expiryAt = jwtService.getRefreshTokenExpiryDate()
-        )
-        tokenRepository.save(tokenEntity)
-    }
+        try {
 
-//    fun findByTokenHash(tokenHash: String): Token? {
-//        return tokenRepository.findByTokenHashAndRevokedFalse(tokenHash)
-//    }
-//
-//    fun isRefreshTokenValid(tokenHash: String): Boolean {
-//        val token = tokenRepository.findByTokenHashAndRevokedFalse(tokenHash) ?: return false
-//        if (token.expiryAt != null && token.expiryAt!!.isBefore(Instant.now())) {
-//            return false
-//        }
-//        return jwtService.isTokenValid(tokenHash)
-//    }
+
+            val tokenEntity = Token(
+                tokenHash = token,
+                user = user.user,
+                deviceId = deviceId,
+                expiryAt = jwtService.getRefreshTokenExpiryDate()
+            )
+            tokenRepository.save(tokenEntity)
+        } catch (e: Exception) {
+            throw e
+        }
+    }
 
     @Transactional
     fun rotateRefreshToken(oldTokenHash: String, orgUser: OrgUser, deviceId: String): String {
@@ -48,20 +43,29 @@ class TokenService(
 
     @Transactional
     fun revokeToken(tokenHash: String) {
-        val token = tokenRepository.findByTokenHashAndRevokedFalse(tokenHash)
-        if (token != null) {
-            token.revoked = true
-            token.updatedAt = Instant.now()
-            tokenRepository.save(token)
+        try {
+            val token = tokenRepository.findByTokenHashAndRevokedFalse(tokenHash)
+            if (token != null) {
+                token.revoked = true
+                token.updatedAt = Instant.now()
+                tokenRepository.save(token)
+            }
+        } catch (e: Exception) {
+            throw e
         }
     }
 
     @Transactional
     fun revokeAllTokensByUser(userId: Long): Int {
 
-        val user: User = authRepo.findById(userId).orElse(null) ?: throw Exception("User not found")
+        try {
+            val user: User = authRepo.findById(userId).orElse(null) ?: throw Exception("User not found")
 
-        return tokenRepository.revokeAllTokensByUser(user)
+            return tokenRepository.revokeAllTokensByUser(user)
+
+        } catch (e: Exception) {
+            throw e
+        }
     }
 
     @Transactional
